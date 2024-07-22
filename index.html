@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wound Classification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .question input {
+            margin-right: 10px;
+        }
+        .question button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .question button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Wound Classification Questions</h1>
+        <form id="woundForm">
+            <div class="question" id="question1">
+                <p>1. Skin abnormality?</p>
+                <label><input type="radio" name="q1" value="yes" onclick="showNext('question2')"> Yes</label>
+                <label><input type="radio" name="q1" value="no" onclick="performBradenScale()"> No</label>
+            </div>
+            <div class="question" id="question2" style="display: none;">
+                <p>2. Is the wound/ skin abnormality over the bony prominence area/ related to medical devices?</p>
+                <label><input type="radio" name="q2" value="yes" onclick="showNext('question3')"> Yes</label>
+                <label><input type="radio" name="q2" value="no" onclick="showNext('question10')"> No</label>
+            </div>
+            <div class="question" id="question3" style="display: none;">
+                <p>3. Is it an open wound?</p>
+                <label><input type="radio" name="q3" value="yes" onclick="showNext('question4')"> Yes</label>
+                <label><input type="radio" name="q3" value="no" onclick="showNext('question6')"> No</label>
+            </div>
+            <div class="question" id="question4" style="display: none;">
+                <p>4. Any bone/ tendon structure exposed?</p>
+                <label><input type="radio" name="q4" value="yes" onclick="showResult('It is Stage 4 PI.')"> Yes</label>
+                <label><input type="radio" name="q4" value="no" onclick="showNext('question5')"> No</label>
+            </div>
+            <div class="question" id="question5" style="display: none;">
+                <p>5. Any subcutaneous fat exposed?</p>
+                <label><input type="radio" name="q5" value="yes" onclick="showResult('It is Stage 3 PI.')"> Yes</label>
+                <label><input type="radio" name="q5" value="no" onclick="showResult('It is Stage 2 PI.')"> No</label>
+            </div>
+            <div class="question" id="question6" style="display: none;">
+                <p>6. Does blister present?</p>
+                <label><input type="radio" name="q6" value="yes" onclick="showNext('question7')"> Yes</label>
+                <label><input type="radio" name="q6" value="no" onclick="showNext('question8')"> No</label>
+            </div>
+            <div class="question" id="question7" style="display: none;">
+                <p>7. Blood filled blister = Deep Tissue Injury (DTI).<br>Serous filled blister = Stage 2 PI.</p>
+            </div>
+            <div class="question" id="question8" style="display: none;">
+                <p>8. Is the skin blanchable?</p>
+                <label><input type="radio" name="q8" value="yes" onclick="showResult('It is not a PI.')"> Yes</label>
+                <label><input type="radio" name="q8" value="no" onclick="showNext('question9')"> No</label>
+            </div>
+            <div class="question" id="question9" style="display: none;">
+                <p>9. Light purple = DTI<br>Non-blanchable redness = Stage 1 PI.</p>
+            </div>
+            <div class="question" id="question10" style="display: none;">
+                <p>10. Is the wound related to moisture?</p>
+                <label><input type="radio" name="q10" value="yes" onclick="showNext('question11')"> Yes</label>
+                <label><input type="radio" name="q10" value="no" onclick="showNext('question12')"> No</label>
+            </div>
+            <div class="question" id="question11" style="display: none;">
+                <p>11. Is the wound located at the perineal area?</p>
+                <label><input type="radio" name="q11" value="yes" onclick="showResult('It is not PI but IAD (incontinence associated dermatitis).')"> Yes</label>
+                <label><input type="radio" name="q11" value="no" onclick="showResult('It is not PI but MASD (moisture associated skin damage).')"> No</label>
+            </div>
+            <div class="question" id="question12" style="display: none;">
+                <p>12. Is the non-PI wound open?</p>
+                <label><input type="radio" name="q12" value="yes" onclick="showResult('Chart the wound according to its characteristics, e.g. laceration, abrasion, open surgical wound, venous ulcer etc.')"> Yes</label>
+                <label><input type="radio" name="q12" value="no" onclick="showResult('Chart the wound according to its characteristics, e.g. bruise, rash, cellulitis, etc.')"> No</label>
+            </div>
+            <div id="result" style="display: none;">
+                <p id="resultText"></p>
+            </div>
+        </form>
+    </div>
+    <script>
+        function showNext(questionId) {
+            document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+            document.getElementById(questionId).style.display = 'block';
+        }
+
+        function showResult(resultText) {
+            document.querySelectorAll('.question').forEach(q => q.style.display = 'none');
+            document.getElementById('resultText').innerText = resultText;
+            document.getElementById('result').style.display = 'block';
+        }
+
+        function performBradenScale() {
+            alert('Perform Braden scale.');
+        }
+    </script>
+</body>
+</html>
+
+
